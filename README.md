@@ -4,7 +4,11 @@
 # 使用方法
 ``` javascript
 // example
-var arr = [{"code":"000001","name":"上证指数","type":"指数"},{"code":"000002","name":"A股指数","type":"指数"},{"code":"000003","name":"B股指数","type":"指数"}];
+var arr = [
+            {"code":"000001","name":"上证指数","type":"指数"},
+            {"code":"000002","name":"A股指数","type":"指数"},
+            {"code":"000003","name":"B股指数","type":"指数"}
+          ];
 // 正序
 arr.OrderBy("code"); 
 // 倒序
