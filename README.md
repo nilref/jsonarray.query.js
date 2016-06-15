@@ -1,6 +1,6 @@
-# JSONArray.Query.js
+# JsonArray.Query.js
 <p>对JSON数组进行简单查询的js插件</p>
-<p>项目主页：<a href="http://mahatmasmile.github.io/JSONArray.Query.js/">http://mahatmasmile.github.io/JSONArray.Query.js/</a></p>
+<p>项目主页：<a href="http://mahatmasmile.github.io/JsonArray.Query.js/">http://mahatmasmile.github.io/JsonArray.Query.js/</a></p>
 
 # 使用方法
 ``` javascript
