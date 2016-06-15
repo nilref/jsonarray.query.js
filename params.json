@@ -1,6 +1,6 @@
 {
-  "name": "Jsonarray.query.js",
+  "name": "jsonarray.query.js",
   "tagline": "对JSON数组进行简单查询的js插件",
-  "body": "## Usage\r\n``` javascript\r\n// example\r\nvar arr = [\r\n            {\"code\":\"000001\",\"name\":\"上证指数\",\"type\":\"指数\"},\r\n            {\"code\":\"000002\",\"name\":\"A股指数\",\"type\":\"指数\"},\r\n            {\"code\":\"000003\",\"name\":\"B股指数\",\"type\":\"指数\"}\r\n          ];\r\n// 正序\r\narr.OrderBy(\"code\"); \r\n// 倒序\r\narr.OrderByDesc(\"code\"); \r\n// 查询 code 大于 \"000002\" 并且 name 等于 \"B股指数\" 的数据，参数名前要加上符号 \"@\"\r\n// 查询语法关键词(用过sql的都懂的)：AND OR <> NOT = > < >= <= \r\n// 也可自己在代码中扩展自定义查询语法\r\narr.Query('@code>=\"000002\" AND @name=\"B股指数\"'); \r\n```\r\n\r\n## Support or Contact\r\nHaving trouble with Pages? Check out my [issues](https://github.com/mahatmasmile/JSONArray.Query.js/issues) or send mail(mahatmasmile@qq.com) and I’ll help you sort it out.\r\n",
+  "body": "## Usage\r\n``` javascript\r\n// example\r\nvar arr = [\r\n            {\"code\":\"000001\",\"name\":\"上证指数\",\"type\":\"指数\"},\r\n            {\"code\":\"000002\",\"name\":\"A股指数\",\"type\":\"指数\"},\r\n            {\"code\":\"000003\",\"name\":\"B股指数\",\"type\":\"指数\"}\r\n          ];\r\n// 正序\r\narr.OrderBy(\"code\"); \r\n// 倒序\r\narr.OrderByDesc(\"code\"); \r\n// 查询 code 大于 \"000002\" 并且 name 等于 \"B股指数\" 的数据，参数名前要加上符号 \"@\"\r\n// 查询语法关键词(用过sql的都懂的)：AND OR <> NOT = > < >= <= \r\n// 也可自己在代码中扩展自定义查询语法\r\narr.Query('@code>=\"000002\" AND @name=\"B股指数\"'); \r\n```\r\n\r\n## Support or Contact\r\nHaving trouble with Pages? Check out my [issues](https://github.com/mahatmasmile/jsonarray.query.js/issues) or send mail(mahatmasmile@qq.com) and I’ll help you sort it out.\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
