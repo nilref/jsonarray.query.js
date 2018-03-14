@@ -1,8 +1,10 @@
 //JSON数组 查询插件
 /*
-* JSONArray.Query('@colname1="val1" OR @colname2=val2') return [{...},{...},...];
-* JSONArray.IndexOf('@colname1="val1" OR @colname2=val2') return -1;
-* JSONArray.Remove('@colname1="val1" OR @colname2=val2') return [{...},{...},...];
+* JSONArray.Query('@colname1="test" OR @colname2=999') return [{...},{...},...];
+* JSONArray.Select('@colname1,@colname2,"colname3":@colname1 + "#" + @colname2') return [{colname1:"test",colname2:999,colname3:"test#999"},{...},...];
+* JSONArray.Join('@colname1 + "#" + @colname2','|') return "test#999|test#999|...";
+* JSONArray.IndexOf('@colname1="test" OR @colname2=999') return -1;
+* JSONArray.Remove('@colname1="test" OR @colname2=999') return [{...},{...},...];
 * JSONArray.OrderBy('colname1') return [{...},{...},...];
 * JSONArray.OrderByDesc('colname2') return [{...},{...},...];
 * AND OR <> NOT = > < >= <=
@@ -32,6 +34,7 @@
         /OR/gi, "||",
         /<>/g, "!=",
         /NOT/gi, "!",
+        /([^+\-*/])\+([^+\-*/]|$)/g, '$1+$2',
         /([^=<>])=([^=]|$)/g, '$1==$2',
         /([^=<>])>([^=]|$)/g, '$1>$2',
         /([^=<>])<([^=]|$)/g, '$1<$2',
@@ -68,7 +71,7 @@
         return arr.join('"');
     }
 
-    // 定义模函数
+    // 查询模函数
     var _queryTempl = function (_list) {
         var _ret = [];
         var _i = -1;
@@ -98,9 +101,82 @@
     }
     .toString();
 
+    // 选择列模函数
+    var _selectTempl = function (_list) {
+        var _ret = [];
+        var _i = -1;
+        for (var _k in _list) {
+            var _e = _list[_k];
+            if (_e != _proto[_k]) {
+                _ret[++_i] = $C;
+            }
+        }
+        return _ret;
+    }
+    .toString();
+
+    // 拼接字符串模函数
+    var _joinTempl = function (_list) {
+        var _ret = [];
+        var _i = -1;
+        for (var _k in _list) {
+            var _e = _list[_k];
+            if (_e != _proto[_k]) {
+                _ret[++_i] = $C;
+            }
+        }
+        return _ret;
+    }
+    .toString();
+
+    // 拼接字符串
+    _proto.Join = function (exp, separator) {
+        var pr = "Join";
+        if (!exp) {
+            return [];
+        }
+        var fn = _cache[pr + exp];
+        try {
+            if (!fn) {
+                var code = _interpret(exp);
+                code = _joinTempl.replace("$C", code);
+                fn = _cache[pr + exp] = _complite(code);
+            }
+            return fn(this).join(separator);
+        } catch (e) {
+            return [];
+        }
+    }
+
+    // 选择列
+    _proto.Select = function (exp) {
+        var pr = "Select";
+        if (!exp) {
+            return [];
+        }
+        var fn = _cache[pr + exp];
+        try {
+            if (!fn) {
+                var _pronameArr = exp.split(',');
+                for (var i = 0; i < _pronameArr.length; i++) {
+                    if (_pronameArr[i].indexOf(":") <= -1) {
+                        _pronameArr[i] = _pronameArr[i].replace("@", "") + ":" + _pronameArr[i];
+                    }
+                }
+                exp = "{" + _pronameArr.join(',') + "}";
+                var code = _interpret(exp);
+                code = _selectTempl.replace("$C", code);
+                fn = _cache[pr + exp] = _complite(code);
+            }
+            return fn(this);
+        } catch (e) {
+            return [];
+        }
+    }
+
     // 扩展查询的方法
     _proto.Query = function (exp) {
-        var pr = "Q";
+        var pr = "Query";
         if (!exp) {
             return [];
         }
@@ -119,8 +195,7 @@
 
     // 查找元素下标
     _proto.IndexOf = function (exp) {
-        //debugger
-        var pr = "I";
+        var pr = "IndexOf";
         if (!exp) {
             return [];
         }
