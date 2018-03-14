@@ -6,16 +6,21 @@
 ``` javascript
 // example
 var arr = [
-            {"code":"000001","name":"上证指数","type":"指数"},
-            {"code":"000002","name":"A股指数","type":"指数"},
-            {"code":"000003","name":"B股指数","type":"指数"}
+            {"code":"000001","name":"上证指数","type":"指数","value":1000},
+            {"code":"000002","name":"A股指数","type":"指数","value":2000},
+            {"code":"000003","name":"B股指数","type":"指数","value":3000}
           ];
+
+// 查询 code 大于 "000002" 并且 name 等于 "B股指数" 的数据，参数名前要加上符号 "@"
+// 查询语法关键词(用过sql的都懂的)：AND OR <> NOT = > < >= <= 
+// 也可自己在代码中扩展自定义查询语法
+arr.Query('@code>="000002" OR @value=3000'); 
+// 查询第一个符合条件的元素的下标
+arr.IndexOf('@code>="000002" OR @value=3000');
+// 删除并返回符合条件的元素
+arr.Remove('@code>="000002" OR @value=3000');
 // 正序
 arr.OrderBy("code"); 
 // 倒序
 arr.OrderByDesc("code"); 
-// 查询 code 大于 "000002" 并且 name 等于 "B股指数" 的数据，参数名前要加上符号 "@"
-// 查询语法关键词(用过sql的都懂的)：AND OR <> NOT = > < >= <= 
-// 也可自己在代码中扩展自定义查询语法
-arr.Query('@code>="000002" AND @name="B股指数"'); 
 ```
