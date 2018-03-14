@@ -1,6 +1,7 @@
 //JSON数组 查询插件
 /*
 * JSONArray.Query('@colname1="test" OR @colname2=999') return [{...},{...},...];
+* JSONArray.Query('@colname1="test" OR @colname2=999').First() return {...};
 * JSONArray.Select('@colname1,@colname2,"colname3":@colname1 + "#" + @colname2') return [{colname1:"test",colname2:999,colname3:"test#999"},{...},...];
 * JSONArray.Join('@colname1 + "#" + @colname2','|') return "test#999|test#999|...";
 * JSONArray.IndexOf('@colname1="test" OR @colname2=999') return -1;
@@ -191,6 +192,14 @@
         } catch (e) {
             return [];
         }
+    }
+
+    // 取数组第一个元素
+    _proto.First = function () {
+        if (this.length > 0)
+            return this[0];
+        else
+            return {};
     }
 
     // 查找元素下标
