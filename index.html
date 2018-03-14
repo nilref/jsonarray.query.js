@@ -22,21 +22,36 @@
       <h2>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-c">// example</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-c"><span class="pl-c">//</span> example</span>
 <span class="pl-k">var</span> arr <span class="pl-k">=</span> [
-            {<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>000001<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>上证指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>指数<span class="pl-pds">"</span></span>},
-            {<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>000002<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>A股指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>指数<span class="pl-pds">"</span></span>},
-            {<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>000003<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>B股指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>指数<span class="pl-pds">"</span></span>}
+            {<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>000001<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>上证指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-c1">1000</span>},
+            {<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>000002<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>A股指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-c1">2000</span>},
+            {<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>000003<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>B股指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>指数<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-c1">3000</span>}
           ];
-<span class="pl-c">// 正序</span>
-<span class="pl-smi">arr</span>.<span class="pl-en">OrderBy</span>(<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span>); 
-<span class="pl-c">// 倒序</span>
-<span class="pl-smi">arr</span>.<span class="pl-en">OrderByDesc</span>(<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span>); 
-<span class="pl-c">// 查询 code 大于 "000002" 并且 name 等于 "B股指数" 的数据，参数名前要加上符号 "@"</span>
-<span class="pl-c">// 查询语法关键词(用过sql的都懂的)：AND OR &lt;&gt; NOT = &gt; &lt; &gt;= &lt;= </span>
-<span class="pl-c">// 也可自己在代码中扩展自定义查询语法</span>
-<span class="pl-smi">arr</span>.<span class="pl-en">Query</span>(<span class="pl-s"><span class="pl-pds">'</span>@code&gt;="000002" AND @name="B股指数"<span class="pl-pds">'</span></span>); </pre></div>
 
+<span class="pl-c"><span class="pl-c">//</span> 查询 code 大于 "000002" 并且 name 等于 "B股指数" 的数据，参数名前要加上符号 "@"</span>
+<span class="pl-c"><span class="pl-c">//</span> 查询语法关键词(用过sql的都懂的)：AND OR &lt;&gt; NOT = &gt; &lt; &gt;= &lt;= </span>
+<span class="pl-c"><span class="pl-c">//</span> 也可自己在代码中扩展自定义查询语法</span>
+<span class="pl-smi">arr</span>.<span class="pl-en">Query</span>(<span class="pl-s"><span class="pl-pds">'</span>@code&gt;="000002" OR @value=3000<span class="pl-pds">'</span></span>); 
+<span class="pl-k">return</span> [{<span class="pl-k">...</span>},{<span class="pl-k">...</span>},<span class="pl-k">...</span>];
+<span class="pl-c"><span class="pl-c">//</span> 按照表达式输出结果</span>
+<span class="pl-smi">arr</span>.<span class="pl-en">Select</span>(<span class="pl-s"><span class="pl-pds">'</span>@code,@value=3000,"nametype":@name+"#"+@type<span class="pl-pds">'</span></span>); 
+<span class="pl-k">return</span> [{<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>000001<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>value<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>1000<span class="pl-pds">"</span></span>,<span class="pl-s"><span class="pl-pds">"</span>nametype<span class="pl-pds">"</span></span><span class="pl-k">:</span><span class="pl-s"><span class="pl-pds">"</span>上证指数#指数<span class="pl-pds">"</span></span>},{<span class="pl-k">...</span>},<span class="pl-k">...</span>];
+<span class="pl-c"><span class="pl-c">//</span> 按照表达式拼接字符串</span>
+<span class="pl-smi">arr</span>.<span class="pl-en">Join</span>(<span class="pl-s"><span class="pl-pds">'</span>@name+"#"+@type<span class="pl-pds">'</span></span>,<span class="pl-s"><span class="pl-pds">'</span>|<span class="pl-pds">'</span></span>); 
+<span class="pl-k">return</span> <span class="pl-s"><span class="pl-pds">"</span>上证指数#指数|A股指数#指数|B股指数#指数<span class="pl-pds">"</span></span>;
+<span class="pl-c"><span class="pl-c">//</span> 查询第一个符合条件的元素的下标</span>
+<span class="pl-smi">arr</span>.<span class="pl-en">IndexOf</span>(<span class="pl-s"><span class="pl-pds">'</span>@code&gt;="000002"<span class="pl-pds">'</span></span>);
+<span class="pl-k">return</span> <span class="pl-c1">1</span>;
+<span class="pl-c"><span class="pl-c">//</span> 删除并返回符合条件的元素</span>
+<span class="pl-smi">arr</span>.<span class="pl-en">Remove</span>(<span class="pl-s"><span class="pl-pds">'</span>@code&gt;="000002" OR @value=3000<span class="pl-pds">'</span></span>);
+<span class="pl-k">return</span> [{<span class="pl-k">...</span>},{<span class="pl-k">...</span>},<span class="pl-k">...</span>];
+<span class="pl-c"><span class="pl-c">//</span> 正序</span>
+<span class="pl-smi">arr</span>.<span class="pl-en">OrderBy</span>(<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span>); 
+<span class="pl-k">return</span> [{<span class="pl-k">...</span>},{<span class="pl-k">...</span>},<span class="pl-k">...</span>];
+<span class="pl-c"><span class="pl-c">//</span> 倒序</span>
+<span class="pl-smi">arr</span>.<span class="pl-en">OrderByDesc</span>(<span class="pl-s"><span class="pl-pds">"</span>code<span class="pl-pds">"</span></span>); 
+<span class="pl-k">return</span> [{<span class="pl-k">...</span>},{<span class="pl-k">...</span>},<span class="pl-k">...</span>];</pre></div>
 <h2>
 <a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support or Contact</h2>
 
