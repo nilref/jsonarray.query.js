@@ -15,12 +15,23 @@ var arr = [
 // 查询语法关键词(用过sql的都懂的)：AND OR <> NOT = > < >= <= 
 // 也可自己在代码中扩展自定义查询语法
 arr.Query('@code>="000002" OR @value=3000'); 
+return [{...},{...},...];
+// 按照表达式输出结果
+arr.Select('@code,@value=3000,"nametype":@name+"#"+@type'); 
+return [{"code":"000001","value":"1000","nametype":"上证指数#指数"},{...},...];
+// 按照表达式拼接字符串
+arr.Join('@name+"#"+@type','|'); 
+return "上证指数#指数|A股指数#指数|B股指数#指数";
 // 查询第一个符合条件的元素的下标
-arr.IndexOf('@code>="000002" OR @value=3000');
+arr.IndexOf('@code>="000002"');
+return 1;
 // 删除并返回符合条件的元素
 arr.Remove('@code>="000002" OR @value=3000');
+return [{...},{...},...];
 // 正序
 arr.OrderBy("code"); 
+return [{...},{...},...];
 // 倒序
 arr.OrderByDesc("code"); 
+return [{...},{...},...];
 ```
