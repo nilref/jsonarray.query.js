@@ -16,6 +16,9 @@ var arr = [
 // 也可自己在代码中扩展自定义查询语法
 arr.Query('@code>="000002" OR @value=3000'); 
 return [{...},{...},...];
+// 取数组第一个元素
+arr.Query('@code>="000002" OR @value=3000').First(); 
+return {...};
 // 按照表达式输出结果
 arr.Select('@code,@value=3000,"nametype":@name+"#"+@type'); 
 return [{"code":"000001","value":"1000","nametype":"上证指数#指数"},{...},...];
