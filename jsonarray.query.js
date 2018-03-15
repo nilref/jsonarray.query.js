@@ -1,7 +1,6 @@
 //JSON数组 查询插件
 /*
 * JSONArray.Query('@colname1="test" OR @colname2=999') return [{...},{...},...];
-* JSONArray.Query('@colname1="test" OR @colname2=999').First() return {...};
 * JSONArray.Select('@colname1,@colname2,"colname3":@colname1 + "#" + @colname2') return [{colname1:"test",colname2:999,colname3:"test#999"},{...},...];
 * JSONArray.Join('@colname1 + "#" + @colname2','|') return "test#999|test#999|...";
 * JSONArray.IndexOf('@colname1="test" OR @colname2=999') return -1;
@@ -159,12 +158,22 @@
         try {
             if (!fn) {
                 var _pronameArr = exp.split(',');
+                var _addDefaultProname = _pronameArr.length > 1;
                 for (var i = 0; i < _pronameArr.length; i++) {
-                    if (_pronameArr[i].indexOf(":") <= -1) {
+                    if (_addDefaultProname && _pronameArr[i].indexOf(":") <= -1) {
                         _pronameArr[i] = _pronameArr[i].replace("@", "") + ":" + _pronameArr[i];
                     }
                 }
-                exp = "{" + _pronameArr.join(',') + "}";
+                if (_addDefaultProname) {
+                    exp = "{" + _pronameArr.join(',') + "}";
+                } else {
+                    //只有一个元素
+                    if (_pronameArr[0].indexOf(":") > 0) {
+                        exp = "{" + _pronameArr[0] + "}";
+                    } else {
+                        exp = _pronameArr[0];
+                    }
+                }
                 var code = _interpret(exp);
                 code = _selectTempl.replace("$C", code);
                 fn = _cache[pr + exp] = _complite(code);
@@ -242,6 +251,13 @@
     // 倒序排序
     _proto.OrderByDesc = function (proname) {
         return objArrSort(this, proname).reverse();
+    }
+
+    // 循环
+    _proto.Each = function (callbackFunc) {
+        for (var i = 0; i < this.length; i++) {
+            callbackFunc(i, this[i]);
+        }
     }
 
     // 对象数组排序  proname:"排序的字段"
