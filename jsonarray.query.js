@@ -222,12 +222,15 @@
     _proto.IndexOf = function (exp) {
         var pr = "IndexOf";
         if (!exp) {
-            return [];
+            return -1;
         }
         var fn = _cache[pr + exp];
         try {
             if (!fn) {
                 var code = _interpret(exp);
+                if (code.indexOf('_e.') < 0) {
+                    code = '_e == "{0}"'.replace('{0}', code);
+                }
                 code = _indexOfTempl.replace("$C", code);
                 fn = _cache[pr + exp] = _complite(code);
             }
@@ -268,11 +271,8 @@
     }
 
     // 是否包含指定元素
-    _proto.Contains = function (el) {
-        for (var i in this) {
-            if (this[i] === el) return true;
-        }
-        return false;
+    _proto.Contains = function (exp) {
+        return this.IndexOf(exp) > -1;
     }
 
     // 对象数组排序  proname:"排序的字段"
