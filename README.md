@@ -37,4 +37,10 @@ return [{...},{...},...];
 // 倒序
 arr.OrderByDesc("code"); 
 return [{...},{...},...];
+// 遍历
+JSONArray.Each(function(index,item){...});
+// 是否包含指定元素
+JSONArray.Contains('test'); 
+return true|false;
+//
 ```
