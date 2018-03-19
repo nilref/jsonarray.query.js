@@ -30,8 +30,8 @@
     // 自定义运算符：JS运算符
     var _alias = [
         /@/g, "_e.",
-        /AND/gi, "&&",
-        /OR/gi, "||",
+        /\sAND\s/gi, " && ",
+        /\sOR\s/gi, " || ",
         /<>/g, "!=",
         /NOT/gi, "!",
         /([^+\-*/])\+([^+\-*/]|$)/g, '$1+$2',
@@ -184,6 +184,11 @@
         }
     }
 
+    // 去重
+    _proto.Distinct = function () {
+        return Array.from(new Set(this));
+    }
+
     // 扩展查询的方法
     _proto.Query = function (exp) {
         var pr = "Query";
@@ -253,11 +258,19 @@
         return objArrSort(this, proname).reverse();
     }
 
-    // 循环
+    // 遍历
     _proto.Each = function (callbackFunc) {
         for (var i = 0; i < this.length; i++) {
             callbackFunc(i, this[i]);
         }
+    }
+
+    // 是否包含指定元素
+    _proto.Contains = function (el) {
+        for (var i in this) {
+            if (this[i] === el) return true;
+        }
+        return false;
     }
 
     // 对象数组排序  proname:"排序的字段"
