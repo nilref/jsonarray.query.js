@@ -7,6 +7,8 @@
 * JSONArray.Remove('@colname1="test" OR @colname2=999') return [{...},{...},...];
 * JSONArray.OrderBy('colname1') return [{...},{...},...];
 * JSONArray.OrderByDesc('colname2') return [{...},{...},...];
+* JSONArray.Each(function(index,item){...});
+* JSONArray.Contains('test'); return true|false;
 * AND OR <> NOT = > < >= <=
 */
 (function () {
