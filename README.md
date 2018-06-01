@@ -42,5 +42,4 @@ JSONArray.Each(function(index,item){...});
 // 是否包含指定元素
 JSONArray.Contains('test'); 
 return true|false;
-//
 ```
