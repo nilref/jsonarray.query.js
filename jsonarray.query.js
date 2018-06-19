@@ -1,4 +1,4 @@
-//JSON数组 查询插件
+//JSON数组 查询插件 v1.2.0
 /*
 * JSONArray.Query('@colname1="test" OR @colname2=999') return [{...},{...},...];
 * JSONArray.Select('@colname1,@colname2,"colname3":@colname1 + "#" + @colname2') return [{colname1:"test",colname2:999,colname3:"test#999"},{...},...];
@@ -13,7 +13,7 @@
 * JSONArray.Sum('@colname1'); return 64;
 * JSONArray.Sum('@colname1 + @colname1'); return 128;
 * JSONArray.Distinct(); return [{...},{...},...];
-* JSONArray.GroupBy('@colname1,@colname2'); return [{colname1:"test",colename2:999,data:[{...},...]},{...},...];
+* JSONArray.GroupBy('@colname1,@colname2'); return [{colname1:"test",colename2:999,Data:[{...},...]},{...},...];
 * AND OR <> NOT = > < >= <=
 */
 (function () {
@@ -158,14 +158,14 @@
                     _r[_colnames[_k]] = _e[_colnames[_k]];
                 }
                 _r['#key'] = _key;
-                _r.data = [_e];
+                _r.Data = [_e];
                 _ret.push(_r);
                 _map[_key] = true;
             } else {
                 for (var _j = 0; _j < _ret.length; _j++) {
                     var _r = _ret[_j];
                     if (_r['#key'] === _key) {
-                        _r.data.push(_e);
+                        _r.Data.push(_e);
                         break;
                     }
                 }
