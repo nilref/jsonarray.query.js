@@ -1,6 +1,5 @@
 # JsonArray.Query.js
 <p>对JSON数组进行简单查询的js插件</p>
-<p>项目主页：<a href="http://mahatmasmile.github.io/jsonarray.query.js/">http://mahatmasmile.github.io/jsonarray.query.js/</a></p>
 
 # 使用方法
 ``` javascript
@@ -42,4 +41,18 @@ JSONArray.Each(function(index,item){...});
 // 是否包含指定元素
 JSONArray.Contains('test'); 
 return true|false;
+// 返回指定数量的元素
+JSONArray.Take(3); 
+return [{...},{...},{...}];
+// 求和
+JSONArray.Sum('@colname1'); 
+return 64;
+JSONArray.Sum('@colname1 + @colname1'); 
+return 128;
+// 去重
+JSONArray.Distinct(); 
+return [{...},{...},...];
+// 分组查询
+JSONArray.GroupBy('@colname1,@colname2'); 
+return [{colname1:"test",colename2:999,Data:[{...},...]},{...},...];
 ```
