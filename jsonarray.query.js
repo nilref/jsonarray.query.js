@@ -17,6 +17,7 @@
 * AND OR <> NOT = > < >= <=
 */
 (function () {
+    'use strict'
     var len = function (s) {
         return s.length;
     }
