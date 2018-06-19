@@ -2,13 +2,18 @@
 /*
 * JSONArray.Query('@colname1="test" OR @colname2=999') return [{...},{...},...];
 * JSONArray.Select('@colname1,@colname2,"colname3":@colname1 + "#" + @colname2') return [{colname1:"test",colname2:999,colname3:"test#999"},{...},...];
-* JSONArray.Join('@colname1 + "#" + @colname2','|') return "test#999|test#999|...";
+* JSONArray.Join('@colname1 + "#" + @colname2', '|') return "test#999|test#999|...";
 * JSONArray.IndexOf('@colname1="test" OR @colname2=999') return -1;
 * JSONArray.Remove('@colname1="test" OR @colname2=999') return [{...},{...},...];
 * JSONArray.OrderBy('colname1') return [{...},{...},...];
 * JSONArray.OrderByDesc('colname2') return [{...},{...},...];
 * JSONArray.Each(function(index,item){...});
 * JSONArray.Contains('test'); return true|false;
+* JSONArray.Take(3); return [{...},{...},{...}];
+* JSONArray.Sum('@colname1'); return 64;
+* JSONArray.Sum('@colname1 + @colname1'); return 128;
+* JSONArray.Distinct(); return [{...},{...},...];
+* JSONArray.GroupBy('@colname1,@colname2'); return [{colname1:"test",colename2:999,data:[{...},...]},{...},...];
 * AND OR <> NOT = > < >= <=
 */
 (function () {
@@ -56,7 +61,7 @@
         exp = exp.replace(_rQuote, "!~");
         var arr = exp.split('"');
         var i,
-        n = arr.length;
+            n = arr.length;
         var k = _alias.length;
         for (var i = 0; i < n; i += 2) {
             var s = arr[i];
@@ -86,8 +91,7 @@
             }
         }
         return _ret;
-    }
-    .toString();
+    }.toString();
 
     // 查找元素模函数
     var _indexOfTempl = function (_list) {
@@ -100,8 +104,7 @@
             }
         }
         return -1;
-    }
-    .toString();
+    }.toString();
 
     // 选择列模函数
     var _selectTempl = function (_list) {
@@ -114,8 +117,7 @@
             }
         }
         return _ret;
-    }
-    .toString();
+    }.toString();
 
     // 拼接字符串模函数
     var _joinTempl = function (_list) {
@@ -128,8 +130,49 @@
             }
         }
         return _ret;
-    }
-    .toString();
+    }.toString();
+
+    // 求和模函数
+    var _sumTempl = function (_list) {
+        var _ret = 0;
+        for (var _k in _list) {
+            var _e = _list[_k];
+            if (_e != _proto[_k]) {
+                _ret += $C;
+            }
+        }
+        return _ret;
+    }.toString();
+
+    // 分组查询模函数 $C $KEYS
+    var _groupByTempl = function (_list) {
+        var _map = {},
+            _ret = [];
+        for (var _i = 0; _i < _list.length; _i++) {
+            var _e = _list[_i];
+            var _key = $C.join('_');
+            var _colnames = $KEYS;
+            if (!_map[_key]) {
+                var _r = {};
+                for (var _k = 0; _k < _colnames.length; _k++) {
+                    _r[_colnames[_k]] = _e[_colnames[_k]];
+                }
+                _r['#key'] = _key;
+                _r.data = [_e];
+                _ret.push(_r);
+                _map[_key] = true;
+            } else {
+                for (var _j = 0; _j < _ret.length; _j++) {
+                    var _r = _ret[_j];
+                    if (_r['#key'] === _key) {
+                        _r.data.push(_e);
+                        break;
+                    }
+                }
+            }
+        }
+        return _ret;
+    }.toString();
 
     // 拼接字符串
     _proto.Join = function (exp, separator) {
@@ -141,7 +184,7 @@
         try {
             if (!fn) {
                 var code = _interpret(exp);
-                code = _joinTempl.replace("$C", code);
+                code = _joinTempl.replace(/\$C/, code);
                 fn = _cache[pr + exp] = _complite(code);
             }
             return fn(this).join(separator);
@@ -163,7 +206,7 @@
                 var _addDefaultProname = _pronameArr.length > 1;
                 for (var i = 0; i < _pronameArr.length; i++) {
                     if (_addDefaultProname && _pronameArr[i].indexOf(":") <= -1) {
-                        _pronameArr[i] = _pronameArr[i].replace("@", "") + ":" + _pronameArr[i];
+                        _pronameArr[i] = _pronameArr[i].replace(/@/gm, "") + ":" + _pronameArr[i];
                     }
                 }
                 if (_addDefaultProname) {
@@ -177,18 +220,13 @@
                     }
                 }
                 var code = _interpret(exp);
-                code = _selectTempl.replace("$C", code);
+                code = _selectTempl.replace(/\$C/, code);
                 fn = _cache[pr + exp] = _complite(code);
             }
             return fn(this);
         } catch (e) {
             return [];
         }
-    }
-
-    // 去重
-    _proto.Distinct = function () {
-        return Array.from(new Set(this));
     }
 
     // 扩展查询的方法
@@ -201,21 +239,13 @@
         try {
             if (!fn) {
                 var code = _interpret(exp);
-                code = _queryTempl.replace("$C", code);
+                code = _queryTempl.replace(/\$C/gm, code);
                 fn = _cache[pr + exp] = _complite(code);
             }
             return fn(this);
         } catch (e) {
             return [];
         }
-    }
-
-    // 取数组第一个元素
-    _proto.First = function () {
-        if (this.length > 0)
-            return this[0];
-        else
-            return {};
     }
 
     // 查找元素下标
@@ -231,13 +261,69 @@
                 if (code.indexOf('_e.') < 0) {
                     code = '_e == "{0}"'.replace('{0}', code);
                 }
-                code = _indexOfTempl.replace("$C", code);
+                code = _indexOfTempl.replace(/\$C/gm, code);
                 fn = _cache[pr + exp] = _complite(code);
             }
             return fn(this);
         } catch (e) {
             return -1;
         }
+    }
+
+    // 求和的方法
+    _proto.Sum = function (exp) {
+        var pr = "Sum";
+        if (!exp) {
+            return 0;
+        }
+        var fn = _cache[pr + exp];
+        try {
+            if (!fn) {
+                var code = _interpret(exp);
+                code = _sumTempl.replace(/\$C/gm, code);
+                fn = _cache[pr + exp] = _complite(code);
+            }
+            return fn(this);
+        } catch (e) {
+            return 0;
+        }
+    }
+
+    // 分组查询
+    _proto.GroupBy = function (exp) {
+        var pr = "GroupBy";
+        if (!exp) {
+            return [];
+        }
+        var fn = _cache[pr + exp];
+        try {
+            if (!fn) {
+                var _pronameArr = exp.split(',');
+                var _exp = '[' + exp + ']';
+                var _keys = '["' + _pronameArr.join('","').replace(/@/gm, '') + '"]';
+                _exp = _interpret(_exp);
+                var code = _groupByTempl.replace(/\$C/gm, _exp);
+                code = code.replace(/\$KEYS/gm, _keys);
+                fn = _cache[pr + exp] = _complite(code);
+            }
+            return fn(this);
+        } catch (e) {
+            console.log(e);
+            return [];
+        }
+    }
+
+    // 去重
+    _proto.Distinct = function () {
+        return Array.from(new Set(this));
+    }
+
+    // 取数组第一个元素
+    _proto.First = function () {
+        if (this.length > 0)
+            return this[0];
+        else
+            return {};
     }
 
     // 删除元素
@@ -251,6 +337,15 @@
             }
         } while (index > -1)
         return res;
+    }
+
+    // 返回指定数量的元素
+    _proto.Take = function (num) {
+        var ret = [];
+        for (var i = 0; i < (this.length > num ? num : this.length); i++) {
+            ret.push(this[i]);
+        }
+        return ret;
     }
 
     // 正序排序
