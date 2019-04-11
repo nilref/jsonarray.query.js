@@ -1,22 +1,24 @@
-//JSON数组 查询插件 v1.2.0
-/*
-* JSONArray.Query('@colname1="test" OR @colname2=999') return [{...},{...},...];
-* JSONArray.Select('@colname1,@colname2,"colname3":@colname1 + "#" + @colname2') return [{colname1:"test",colname2:999,colname3:"test#999"},{...},...];
-* JSONArray.Join('@colname1 + "#" + @colname2', '|') return "test#999|test#999|...";
-* JSONArray.IndexOf('@colname1="test" OR @colname2=999') return -1;
-* JSONArray.Remove('@colname1="test" OR @colname2=999') return [{...},{...},...];
-* JSONArray.OrderBy('colname1') return [{...},{...},...];
-* JSONArray.OrderByDesc('colname2') return [{...},{...},...];
-* JSONArray.Each(function(index,item){...});
-* JSONArray.Contains('test'); return true|false;
-* JSONArray.Take(3); return [{...},{...},{...}];
-* JSONArray.Sum('@colname1'); return 64;
-* JSONArray.Sum('@colname1 + @colname1'); return 128;
-* JSONArray.Distinct(); return [{...},{...},...];
-* JSONArray.GroupBy('@colname1,@colname2'); return [{colname1:"test",colename2:999,Data:[{...},...]},{...},...];
-* AND OR <> NOT = > < >= <=
-*/
-(function () {
+/**
+ * JSON Array Query Plus v1.2.1
+ * 
+ * JSONArray.Query('@colname1="test" OR @colname2=999') return [{...},{...},...];
+ * JSONArray.Select('@colname1,@colname2,"colname3":@colname1 + "#" + @colname2') return [{colname1:"test",colname2:999,colname3:"test#999"},{...},...];
+ * JSONArray.First() return {...};
+ * JSONArray.Join('@colname1 + "#" + @colname2', '|') return "test#999|test#999|...";
+ * JSONArray.IndexOf('@colname1="test" OR @colname2=999') return -1;
+ * JSONArray.Remove('@colname1="test" OR @colname2=999') return [{...},{...},...];
+ * JSONArray.OrderBy('@colname1') return [{...},{...},...];
+ * JSONArray.OrderByDesc('@colname2') return [{...},{...},...];
+ * JSONArray.Each(function(index,item){...});
+ * JSONArray.Contains('test'); return true|false;
+ * JSONArray.Take(3); return [{...},{...},{...}];
+ * JSONArray.Sum('@colname1'); return 64;
+ * JSONArray.Sum('@colname1 + @colname1'); return 128;
+ * JSONArray.Distinct(); return [{...},{...},...];
+ * JSONArray.GroupBy('@colname1,@colname2'); return [{colname1:"test",colename2:999,Data:[{...},...]},{...},...];
+ * AND OR <> NOT = > < >= <=
+ */
+; (function () {
     'use strict'
     var len = function (s) {
         return s.length;
@@ -32,12 +34,15 @@
     }
     var _proto = Array.prototype;
 
+    // 自定义变量识别符号，默认@
+    var _symbol = '@';
+
     // 编译后的缓存，提升效率
     var _cache = {};
 
     // 自定义运算符：JS运算符
     var _alias = [
-        /@/g, "_e.",
+        RegExp('@', 'g'), '_e.',
         /\sAND\s/gi, " && ",
         /\sOR\s/gi, " || ",
         /<>/g, "!=",
@@ -351,11 +356,13 @@
 
     // 正序排序
     _proto.OrderBy = function (proname) {
+        proname = (proname || '').trim().replace(/@/igm, '');
         return objArrSort(this, proname);
     }
 
     // 倒序排序
     _proto.OrderByDesc = function (proname) {
+        proname = (proname || '').trim().replace(/@/igm, '');
         return objArrSort(this, proname).reverse();
     }
 
@@ -377,7 +384,6 @@
             return [];
         if (!proname)
             return objArr;
-
         var tmpObj = {};
         for (var i = 0; i < objArr.length - 1; i++) {
             for (var c = 0; c < objArr.length - 1 - i; c++) {
