@@ -56,3 +56,8 @@ return [{...},{...},...];
 JSONArray.GroupBy('@colname1,@colname2'); 
 return [{colname1:"test",colename2:999,Data:[{...},...]},{...},...];
 ```
+
+## License
+
+This project is licensed under the terms of the
+[MIT license](/LICENSE).
